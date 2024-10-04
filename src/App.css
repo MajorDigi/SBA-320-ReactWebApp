@@ -89,3 +89,124 @@ img {
     width: 100%;
   }
 }
+
+/* Second */
+
+/* Basic resets */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f0f4f8;
+  color: #333;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.birdList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 20px;
+  margin: 20px;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  max-width: 300px;
+  cursor: pointer;
+}
+
+.row:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.row img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+.row h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.row ul {
+  list-style-type: none;
+}
+
+.bird-details {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 30px;
+  margin: 20px auto;
+  max-width: 600px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.bird-details h2 {
+  font-size: 2rem;
+  color: #007acc;
+  margin-bottom: 15px;
+}
+
+.bird-details ul {
+  list-style: none;
+  padding: 0;
+}
+
+.bird-details li {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.bird-details img {
+  max-width: 100%;
+  border-radius: 10px;
+  margin-top: 15px;
+}
+
+.recordings h3 {
+  font-size: 1.5rem;
+  color: #007acc;
+  margin-top: 20px;
+}
+
+.recordings ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.recordings li {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.recordings audio {
+  margin-top: 10px;
+}
+
+.error {
+  color: red;
+  text-align: center;
+  margin-bottom: 20px;
+}
