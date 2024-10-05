@@ -9,13 +9,14 @@ function App() {
   const [selectedBird, setSelectedBird] = useState(null); // State for the bird returned from search
   //API
   const apiKey = process.env.REACT_APP_API_KEY;
+
   // const apiUrl = process.env.REACT_APP_API_URL;
 
 
   useEffect(() => {
     fetch('https://nuthatch.lastelm.software/v2/birds?page=1&pageSize=25&region=North%20America&hasImg=true&operator=AND', {
       headers: {
-        'api-key': '62bb08cb-87e4-443c-b306-68d4bcb783c1'
+        'api-key': process.env.REACT_APP_API_KEY
       }
     })
     .then(response => {
@@ -44,7 +45,7 @@ function App() {
   const fetchBirdById = () => {
     fetch(`https://nuthatch.lastelm.software/birds/${birdId}`, {
       headers: {
-        'api-key':  '62bb08cb-87e4-443c-b306-68d4bcb783c1'
+        'api-key':  process.env.REACT_APP_API_KEY
       }
     })
     .then(response => {
