@@ -9,7 +9,7 @@
       "sourceType": "module"
     },
     "rules": {
-      "no-unused-vars": "off", // Change to "off" to ignore this rule
+      "no-unused-vars": "off" // Change to "off" to ignore this rule
       // Add other rules as needed
     }
   }
