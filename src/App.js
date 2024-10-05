@@ -6,7 +6,7 @@ function App() {
   const [errorMessage, setErrorMessage] = useState("");
   const [birdId, setBirdId] = useState(""); // State for search input
   const [selectedBird, setSelectedBird] = useState(null); // State for the bird returned from search
-  const [loading, setLoading] = useState(true); // State for loading spinner
+  const [loading, setLoading] = useState(false); // State for loading spinner
   const [currentPage, setCurrentPage] = useState(1); // State for current page
   
   // API Key
