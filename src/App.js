@@ -36,6 +36,7 @@ function App() {
           return response.json();
         })
         .then(data => {
+          console.log(data); // Log the API response to the console
           if (!data.entities || !Array.isArray(data.entities)) {
             throw new Error("Entities not found or not an array");
           }
