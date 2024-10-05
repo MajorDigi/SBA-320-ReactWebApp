@@ -7,11 +7,10 @@ function App() {
   const [birdId, setBirdId] = useState(""); // State for search input
   const [selectedBird, setSelectedBird] = useState(null); // State for the bird returned from search
   const [loading, setLoading] = useState(false); // State for loading spinner
+  const [currentPage, setCurrentPage] = useState(1); // State for current page
   
   //API
   const apiKey = process.env.REACT_APP_API_KEY;
-
-  // const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     const fetchBirdsMultiplePages = async () => {
@@ -22,47 +21,37 @@ function App() {
       const operator = 'AND';
       const pageRequests = [];
 
-      // Fetch birds from pages 1 to 3
-      for (let page = 1; page <= 3; page++) {
-        const url = `https://nuthatch.lastelm.software/v2/birds?page=${page}&pageSize=${pageSize}&region=${encodeURIComponent(region)}&hasImg=${hasImg}&operator=${operator}`;
-        pageRequests.push(
-          fetch(url, {
-            headers: {
-              'api-key': apiKey, // Use apiKey variable
-            }
-          })
-            .then(response => {
-              if (!response.ok) {
-                throw new Error('Network response was not OK');
-              }
-              return response.json();
-            })
-            .catch(error => {
-              throw new Error("Failed to fetch bird data");
-            })
-        );
-      }
+      // Fetch birds for the current page
+      const url = `https://nuthatch.lastelm.software/v2/birds?page=${currentPage}&pageSize=${pageSize}&region=${encodeURIComponent(region)}&hasImg=${hasImg}&operator=${operator}`;
+      pageRequests.push(
+        fetch(url, {
+          headers: {
+            'api-key': process.env.REACT_APP_API_KEY
+          }
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not OK');
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (!data.entities || !Array.isArray(data.entities)) {
+            throw new Error("Entities not found or not an array");
+          }
+          setBirds(data.entities); // Store all birds in state
+        })
+        .catch(error => {
+          setErrorMessage("Failed to fetch bird data. Please try again later.");
+        })
+      );
 
-      try {
-        // Await all promises and accumulate results
-        const results = await Promise.all(pageRequests);
-        const allBirds = results.flatMap(data => data.entities || []);
-        
-        // Ensure we have valid bird data
-        if (!allBirds || !Array.isArray(allBirds)) {
-          throw new Error("Invalid bird data structure");
-        }
-
-        setBirds(allBirds.slice(0, 5)); // Store first 5 birds
-      } catch (error) {
-        setErrorMessage(error.message);
-      } finally {
-        setLoading(false); // Stop loading
-      }
+      await Promise.all(pageRequests); // Wait for all page requests to complete
+      setLoading(false); // Stop loading
     };
 
     fetchBirdsMultiplePages();
-  }, [apiKey]); // Dependencies include apiKey
+  }, [currentPage]); // Add currentPage to the dependency array
 
   // Function to handle search input change
   const handleInputChange = (e) => {
@@ -71,27 +60,32 @@ function App() {
 
   // Function to fetch bird details by ID
   const fetchBirdById = () => {
-    setLoading(true); // Show loading when fetching specific bird
     fetch(`https://nuthatch.lastelm.software/birds/${birdId}`, {
       headers: {
-        'api-key': apiKey
+        'api-key':  process.env.REACT_APP_API_KEY
       }
     })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Failed to fetch bird by ID');
-        }
-        return response.json();
-      })
-      .then(data => {
-        setSelectedBird(data); // Store the selected bird's data
-      })
-      .catch(error => {
-        setErrorMessage("Bird not found or an error occurred.");
-      })
-      .finally(() => {
-        setLoading(false); // Stop loading after fetching
-      });
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to fetch bird by ID');
+      }
+      return response.json();
+    })
+    .then(data => {
+      setSelectedBird(data); // Store the selected bird's data
+    })
+    .catch(error => {
+      setErrorMessage("Bird not found or an error occurred.");
+    });
+  };
+
+  // Pagination functions
+  const nextPage = () => {
+    setCurrentPage(prevPage => prevPage + 1); // Increment current page
+  };
+
+  const prevPage = () => {
+    setCurrentPage(prevPage => Math.max(prevPage - 1, 1)); // Decrement current page but not below 1
   };
 
   return (
@@ -99,10 +93,7 @@ function App() {
       <header className="App-header">
         <h1>Birds Information</h1>
         {errorMessage && <div className="error">{errorMessage}</div>}
-
-        {/* Show loading spinner */}
-        {loading && <div className="spinner">Loading...</div>}
-
+        
         {/* Search bar */}
         <div className="search-bar">
           <input 
@@ -154,14 +145,16 @@ function App() {
             </div>
           ))}
         </div>
+
+        {/* Pagination Controls */}
+        <div className="pagination-controls">
+          <button onClick={prevPage} disabled={currentPage === 1}>Previous</button>
+          <span>Page {currentPage}</span>
+          <button onClick={nextPage}>Next</button>
+        </div>
       </header>
     </div>
   );
 }
 
 export default App;
-
-
-
-
-
