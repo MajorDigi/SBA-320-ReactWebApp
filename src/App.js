@@ -9,7 +9,7 @@ function App() {
   const [loading, setLoading] = useState(true); // State for loading spinner
   const [currentPage, setCurrentPage] = useState(1); // State for current page
   
-  //API
+  // API Key
   const apiKey = process.env.REACT_APP_API_KEY;
 
   useEffect(() => {
@@ -26,7 +26,7 @@ function App() {
       pageRequests.push(
         fetch(url, {
           headers: {
-            'api-key': process.env.REACT_APP_API_KEY
+            'api-key': apiKey // Use the variable defined above
           }
         })
         .then(response => {
@@ -36,7 +36,6 @@ function App() {
           return response.json();
         })
         .then(data => {
-          console.log(data); // Log the API response to the console
           if (!data.entities || !Array.isArray(data.entities)) {
             throw new Error("Entities not found or not an array");
           }
@@ -52,7 +51,7 @@ function App() {
     };
 
     fetchBirdsMultiplePages();
-  }, [currentPage]); // Add currentPage to the dependency array
+  }, [currentPage, apiKey]); // Add apiKey to dependency array for consistency
 
   // Function to handle search input change
   const handleInputChange = (e) => {
@@ -61,9 +60,11 @@ function App() {
 
   // Function to fetch bird details by ID
   const fetchBirdById = () => {
+    if (birdId.trim() === "") return; // Prevent fetching with an empty ID
+
     fetch(`https://nuthatch.lastelm.software/birds/${birdId}`, {
       headers: {
-        'api-key':  process.env.REACT_APP_API_KEY
+        'api-key': apiKey // Use the variable defined above
       }
     })
     .then(response => {
@@ -159,3 +160,4 @@ function App() {
 }
 
 export default App;
+
