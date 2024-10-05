@@ -1,3 +1,11 @@
+- roaring-sopapillas-1057f6.netlify.app
+
+- Site is linked to a Git repository for continuous deployment.
+Current repository
+github.com/MajorDigi/SBA-320-ReactWebApp
+
+Deploys from GitHub.
+
 SBA 320H - React Web Application Project
 - This project aims to develop a practical web application using React to showcase your problem-solving abilities.
 
@@ -27,3 +35,4 @@ Documentation:
 - Data Integration:
 - Utilize AJAX to fetch data from an external source.
 - Display retrieved data within the application.
+- 
