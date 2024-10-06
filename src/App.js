@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
+
+
+
 function App() {
   const [birds, setBirds] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
@@ -28,7 +31,8 @@ function App() {
       try {
         const response = await fetch(url, {
           headers: {
-            'api-key': apiKey
+            'api-key': apiKey,
+            'X-Requested-With': 'XMLHttpRequest'
           }
         });
 
@@ -68,7 +72,8 @@ function App() {
 
     fetch(url, {
       headers: {
-        'api-key': apiKey
+        'api-key': apiKey,
+        'X-Requested-With': 'XMLHttpRequest'
       }
     })
     .then(response => {
