@@ -1,78 +1,72 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
-
 function App() {
   const [birds, setBirds] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
-  const [birdId, setBirdId] = useState(""); // State for search input
-  const [selectedBird, setSelectedBird] = useState(null); // State for the bird returned from search
-  const [loading, setLoading] = useState(false); // State for loading spinner
-  const [currentPage, setCurrentPage] = useState(1); // State for current page
-  
-  const [uniqueStatuses, setUniqueStatuses] = useState([]); // State to store unique statuses
-  const [selectedStatus, setSelectedStatus] = useState(""); // State to store the selected status
+  const [birdId, setBirdId] = useState("");
+  const [selectedBird, setSelectedBird] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [uniqueStatuses, setUniqueStatuses] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState("");
 
-  // API Key
   const apiKey = process.env.REACT_APP_API_KEY;
 
   useEffect(() => {
     const fetchBirdsMultiplePages = async () => {
-      setLoading(true); // Start loading
+      setLoading(true);
+
       const pageSize = 25;
       const region = 'North America';
       const hasImg = true;
       const operator = 'AND';
-      const pageRequests = [];
+      const proxyUrl = 'https://vicarious-prudence-dmio-2484aa58.koyeb.app/';
+      const apiUrl = `https://nuthatch.lastelm.software/v2/birds?page=${currentPage}&pageSize=${pageSize}&region=${encodeURIComponent(region)}&hasImg=${hasImg}&operator=${operator}`;
+      const url = `${proxyUrl}${apiUrl}`;
 
-      //Added server proxy
-      const url = `https://nuthatch.lastelm.software/v2/birds?page=${currentPage}&pageSize=${pageSize}&region=${encodeURIComponent(region)}&hasImg=${hasImg}&operator=${operator}`;
-      pageRequests.push(
-        fetch(url, {
+      try {
+        const response = await fetch(url, {
           headers: {
             'api-key': apiKey
           }
-        })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not OK');
-          }
-          return response.json();
-        })
-        .then(data => {
-          console.log(data); // Log the API response to the console
-          if (!data.entities || !Array.isArray(data.entities)) {
-            throw new Error("Entities not found or not an array");
-          }
-          setBirds(data.entities); // Store all birds in state
+        });
 
-          // Step 1: Extract unique statuses
-          const statuses = data.entities.map(bird => bird.status);
-          const uniqueStatusesArray = [...new Set(statuses)]; // Remove duplicates
-          setUniqueStatuses(uniqueStatusesArray); // Store in state
-        })
-        .catch(error => {
-          setErrorMessage("Failed to fetch bird data. Please try again later.");
-        })
-      );
+        if (!response.ok) {
+          throw new Error('Network response was not OK');
+        }
 
-      await Promise.all(pageRequests); // Wait for all page requests to complete
-      setLoading(false); // Stop loading
+        const data = await response.json();
+        if (!data.entities || !Array.isArray(data.entities)) {
+          throw new Error("Entities not found or not an array");
+        }
+        setBirds(data.entities);
+
+        const statuses = data.entities.map(bird => bird.status);
+        const uniqueStatusesArray = [...new Set(statuses)];
+        setUniqueStatuses(uniqueStatusesArray);
+      } catch (error) {
+        setErrorMessage("Failed to fetch bird data. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchBirdsMultiplePages();
   }, [currentPage, apiKey]);
 
-  // Function to handle search input change
   const handleInputChange = (e) => {
     setBirdId(e.target.value);
   };
 
-  // Function to fetch bird details by ID
   const fetchBirdById = () => {
     if (birdId.trim() === "") return;
 
-    fetch(`/https:https://nuthatch.lastelm.software/birds/${birdId}`, {
+    const proxyUrl = 'https://vicarious-prudence-dmio-2484aa58.koyeb.app/';
+    const apiUrl = `https://nuthatch.lastelm.software/birds/${birdId}`;
+    const url = `${proxyUrl}${apiUrl}`;
+
+    fetch(url, {
       headers: {
         'api-key': apiKey
       }
@@ -84,28 +78,25 @@ function App() {
       return response.json();
     })
     .then(data => {
-      setSelectedBird(data); // Store the selected bird's data
+      setSelectedBird(data);
     })
     .catch(error => {
       setErrorMessage("Bird not found or an error occurred.");
     });
   };
 
-  // Pagination functions
   const nextPage = () => {
-    setCurrentPage(prevPage => prevPage + 1); // Increment current page
+    setCurrentPage(prevPage => prevPage + 1);
   };
 
   const prevPage = () => {
-    setCurrentPage(prevPage => Math.max(prevPage - 1, 1)); // Decrement current page but not below 1
+    setCurrentPage(prevPage => Math.max(prevPage - 1, 1));
   };
 
-  // Function to handle status change for filtering
   const handleStatusChange = (e) => {
     setSelectedStatus(e.target.value);
   };
 
-  // Filter birds based on selected status
   const filteredBirds = birds.filter(bird => {
     return selectedStatus === "" || bird.status === selectedStatus;
   });
@@ -113,27 +104,10 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1> Birds by Conservation Status</h1>
-         {/* New Title and Explanation */}
-        <h2>Birds Information</h2>
-        
-        <p style={{marginBottom: "20px"}}>
-          This resource is designed for bird lovers to gain knowledge about specific bird species
-           based on their conservation status.</p>
+        <h1>Birds by Conservation Status</h1>
+        <p>This resource is designed for bird lovers to gain knowledge about specific bird species based on their conservation status.</p>
         {errorMessage && <div className="error">{errorMessage}</div>}
-     
-        {/* Search bar DISABLED*/}
-        {/*<div className="search-bar">
-          <input 
-            type="text" 
-            placeholder="Enter Bird ID" 
-            value={birdId}
-            onChange={handleInputChange}
-          />
-          <button onClick={fetchBirdById}>Search</button>
-        </div>*/}
-
-        {/* Filter by status */}
+        
         <div className="filter">
           <label htmlFor="status-select">Filter by Status:</label>
           <select id="status-select" value={selectedStatus} onChange={handleStatusChange}>
@@ -146,7 +120,6 @@ function App() {
           </select>
         </div>
 
-        {/* Display selected bird details */}
         {selectedBird && (
           <div className="bird-details">
             <h2>{selectedBird.name} ({selectedBird.sciName})</h2>
@@ -165,7 +138,6 @@ function App() {
           </div>
         )}
 
-        {/* List of birds */}
         <div className="birdList">
           {filteredBirds.map(bird => (
             <div key={bird.name} className="row">
@@ -187,7 +159,6 @@ function App() {
           ))}
         </div>
 
-        {/* Pagination Controls */}
         <div className="pagination-controls">
           <button onClick={prevPage} disabled={currentPage === 1}>Previous</button>
           <span>Page {currentPage}</span>
@@ -199,4 +170,3 @@ function App() {
 }
 
 export default App;
-
