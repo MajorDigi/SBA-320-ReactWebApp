@@ -9,9 +9,11 @@ function App() {
   const [loading, setLoading] = useState(false); // State for loading spinner
   const [currentPage, setCurrentPage] = useState(1); // State for current page
   
+  const [uniqueStatuses, setUniqueStatuses] = useState([]); // State to store unique statuses
+  const [selectedStatus, setSelectedStatus] = useState(""); // State to store the selected status
+
   // API Key
   const apiKey = process.env.REACT_APP_API_KEY;
- 
 
   useEffect(() => {
     const fetchBirdsMultiplePages = async () => {
@@ -22,14 +24,12 @@ function App() {
       const operator = 'AND';
       const pageRequests = [];
 
-      // Fetch birds for the current page
-      
-     //Added server proxy
+      //Added server proxy
       const url = `https://cors-anywhere.herokuapp.com/https://nuthatch.lastelm.software/v2/birds?page=${currentPage}&pageSize=${pageSize}&region=${encodeURIComponent(region)}&hasImg=${hasImg}&operator=${operator}`;
       pageRequests.push(
         fetch(url, {
           headers: {
-            'api-key': apiKey // Use the variable defined above
+            'api-key': apiKey
           }
         })
         .then(response => {
@@ -39,10 +39,16 @@ function App() {
           return response.json();
         })
         .then(data => {
+          console.log(data); // Log the API response to the console
           if (!data.entities || !Array.isArray(data.entities)) {
             throw new Error("Entities not found or not an array");
           }
           setBirds(data.entities); // Store all birds in state
+
+          // Step 1: Extract unique statuses
+          const statuses = data.entities.map(bird => bird.status);
+          const uniqueStatusesArray = [...new Set(statuses)]; // Remove duplicates
+          setUniqueStatuses(uniqueStatusesArray); // Store in state
         })
         .catch(error => {
           setErrorMessage("Failed to fetch bird data. Please try again later.");
@@ -54,7 +60,7 @@ function App() {
     };
 
     fetchBirdsMultiplePages();
-  }, [currentPage, apiKey]); // Add apiKey to dependency array for consistency
+  }, [currentPage, apiKey]);
 
   // Function to handle search input change
   const handleInputChange = (e) => {
@@ -63,12 +69,11 @@ function App() {
 
   // Function to fetch bird details by ID
   const fetchBirdById = () => {
-    if (birdId.trim() === "") return; // Prevent fetching with an empty ID
+    if (birdId.trim() === "") return;
 
-     //Added server proxy
     fetch(`https://cors-anywhere.herokuapp.com/https:https://nuthatch.lastelm.software/birds/${birdId}`, {
       headers: {
-        'api-key': apiKey // Use the variable defined above
+        'api-key': apiKey
       }
     })
     .then(response => {
@@ -94,6 +99,16 @@ function App() {
     setCurrentPage(prevPage => Math.max(prevPage - 1, 1)); // Decrement current page but not below 1
   };
 
+  // Function to handle status change for filtering
+  const handleStatusChange = (e) => {
+    setSelectedStatus(e.target.value);
+  };
+
+  // Filter birds based on selected status
+  const filteredBirds = birds.filter(bird => {
+    return selectedStatus === "" || bird.status === selectedStatus;
+  });
+
   return (
     <div className="App">
       <header className="App-header">
@@ -109,6 +124,19 @@ function App() {
             onChange={handleInputChange}
           />
           <button onClick={fetchBirdById}>Search</button>
+        </div>
+
+        {/* Filter by status */}
+        <div className="filter">
+          <label htmlFor="status-select">Filter by Status:</label>
+          <select id="status-select" value={selectedStatus} onChange={handleStatusChange}>
+            <option value="">All</option>
+            {uniqueStatuses.map(status => (
+              <option key={status} value={status}>
+                {status}
+              </option>
+            ))}
+          </select>
         </div>
 
         {/* Display selected bird details */}
@@ -132,7 +160,7 @@ function App() {
 
         {/* List of birds */}
         <div className="birdList">
-          {birds.map(bird => (
+          {filteredBirds.map(bird => (
             <div key={bird.name} className="row">
               <div className="third">
                 <h2>{bird.name}</h2>
