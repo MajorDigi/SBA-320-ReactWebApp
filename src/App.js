@@ -11,6 +11,7 @@ function App() {
   
   // API Key
   const apiKey = process.env.REACT_APP_API_KEY;
+ 
 
   useEffect(() => {
     const fetchBirdsMultiplePages = async () => {
@@ -22,7 +23,9 @@ function App() {
       const pageRequests = [];
 
       // Fetch birds for the current page
-      const url = `https://nuthatch.lastelm.software/v2/birds?page=${currentPage}&pageSize=${pageSize}&region=${encodeURIComponent(region)}&hasImg=${hasImg}&operator=${operator}`;
+      
+     //Added server proxy
+      const url = `https://cors-anywhere.herokuapp.com/https://nuthatch.lastelm.software/v2/birds?page=${currentPage}&pageSize=${pageSize}&region=${encodeURIComponent(region)}&hasImg=${hasImg}&operator=${operator}`;
       pageRequests.push(
         fetch(url, {
           headers: {
@@ -62,7 +65,8 @@ function App() {
   const fetchBirdById = () => {
     if (birdId.trim() === "") return; // Prevent fetching with an empty ID
 
-    fetch(`https://nuthatch.lastelm.software/birds/${birdId}`, {
+     //Added server proxy
+    fetch(`https://cors-anywhere.herokuapp.com/https:https://nuthatch.lastelm.software/birds/${birdId}`, {
       headers: {
         'api-key': apiKey // Use the variable defined above
       }
