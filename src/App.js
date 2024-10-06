@@ -112,7 +112,13 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Birds Information</h1>
+        <h1> Birds by Conservation Status</h1>
+         {/* New Title and Explanation */}
+        <h2>Birds Information</h2>
+        
+        <p style={{marginBottom: "20px"}}>
+          This resource is designed for bird lovers to gain knowledge about specific bird species
+           based on their conservation status.</p>
         {errorMessage && <div className="error">{errorMessage}</div>}
      
         {/* Search bar DISABLED*/}
