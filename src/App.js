@@ -25,7 +25,7 @@ function App() {
       const pageRequests = [];
 
       //Added server proxy
-      const url = `https://cors-anywhere.herokuapp.com/https://nuthatch.lastelm.software/v2/birds?page=${currentPage}&pageSize=${pageSize}&region=${encodeURIComponent(region)}&hasImg=${hasImg}&operator=${operator}`;
+      const url = `https://nuthatch.lastelm.software/v2/birds?page=${currentPage}&pageSize=${pageSize}&region=${encodeURIComponent(region)}&hasImg=${hasImg}&operator=${operator}`;
       pageRequests.push(
         fetch(url, {
           headers: {
@@ -71,7 +71,7 @@ function App() {
   const fetchBirdById = () => {
     if (birdId.trim() === "") return;
 
-    fetch(`https://cors-anywhere.herokuapp.com/https:https://nuthatch.lastelm.software/birds/${birdId}`, {
+    fetch(`/https:https://nuthatch.lastelm.software/birds/${birdId}`, {
       headers: {
         'api-key': apiKey
       }
@@ -114,9 +114,9 @@ function App() {
       <header className="App-header">
         <h1>Birds Information</h1>
         {errorMessage && <div className="error">{errorMessage}</div>}
-        
-        {/* Search bar */}
-        <div className="search-bar">
+     
+        {/* Search bar DISABLED*/}
+        {/*<div className="search-bar">
           <input 
             type="text" 
             placeholder="Enter Bird ID" 
@@ -124,7 +124,7 @@ function App() {
             onChange={handleInputChange}
           />
           <button onClick={fetchBirdById}>Search</button>
-        </div>
+        </div>*/}
 
         {/* Filter by status */}
         <div className="filter">
