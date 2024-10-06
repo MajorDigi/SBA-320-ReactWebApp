@@ -1,8 +1,10 @@
-- roaring-sopapillas-1057f6.netlify.app
+This project is hosted on Netlify
+- https://roaring-sopapillas-1057f6.netlify.app/
 
-- Site is linked to a Git repository for continuous deployment.
-Current repository
-github.com/MajorDigi/SBA-320-ReactWebApp
+Site is linked to a Git repository for continuous deployment.
+Current repository:
+
+- github.com/MajorDigi/SBA-320-ReactWebApp
 
 Deploys from GitHub.
 
@@ -10,9 +12,9 @@ SBA 320H - React Web Application Project
 - This project aims to develop a practical web application using React to showcase your problem-solving abilities.
 
 Project Goals:
-
 - Build a functional web application.
-- Demonstrate your skills in addressing a real-world or fictional need using React.
+- Demonstrate skills in addressing a real-world or fictional need using React.
+
 Requirements:
 
 Technology Stack:
@@ -20,6 +22,17 @@ Technology Stack:
 - CSS: Style the application's visual elements.
 - JavaScript: Handle interactions and basic functionalities.
 - React: Manage the user interface and application state.
+
+Project Approach:
+- Adopted a step-by-step approach for building the project to ensure a solid foundation and progressive enhancement.
+- Utilized React, HTML, CSS, and JavaScript to create a simple, functional user interface.
+- Focused initially on successfully implementing a viable GET request using the Random User API to fetch user data.
+- Leveraged comprehensive documentation to ensure accurate and efficient API requests.
+- Established and verified the functionality of the GET request before proceeding.
+- Gradually built up the application by integrating additional features, including:
+- Dynamically updating displayed user information.
+- Enhancing the user experience with CSS styling.
+= Employed an iterative approach for continuous testing and refinement, resulting in a robust and user-friendly application.
 
 Deployment:
 - Host the application on a platform like Heroku or Netlify.
@@ -35,4 +48,3 @@ Documentation:
 - Data Integration:
 - Utilize AJAX to fetch data from an external source.
 - Display retrieved data within the application.
-- 
