@@ -15,6 +15,9 @@ Project Goals:
 - Build a functional web application.
 - Demonstrate skills in addressing a real-world or fictional need using React.
 
+ Project title: Birds Information 
+ - This resource is designed for bird lovers to gain knowledge about specific bird species based on their conservation status.
+
 Requirements:
 
 Technology Stack:
@@ -32,7 +35,7 @@ Project Approach:
 - Gradually built up the application by integrating additional features, including:
 - Dynamically updating displayed user information.
 - Enhancing the user experience with CSS styling.
-= Employed an iterative approach for continuous testing and refinement, resulting in a robust and user-friendly application.
+- Employed an iterative approach for continuous testing and refinement, resulting in a robust and user-friendly application.
 
 Deployment:
 - Host the application on a platform like Heroku or Netlify.
