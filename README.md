@@ -49,7 +49,7 @@ Documentation:
 - Utilize AJAX to fetch data from an external source.
 - Display retrieved data within the application.
 
-ADDED BONUS FEATURE:
+Successfully - ADDED BONUS FEATURE:
 Local Storage
 - Purpose: Enhances user experience by saving the last searched bird ID in the browser.
 - Storage Mechanism: Utilizes the browser's local storage to retain data between sessions.
