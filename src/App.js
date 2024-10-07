@@ -106,6 +106,11 @@ function App() {
     return selectedStatus === "" || bird.status === selectedStatus;
   });
 
+  // Function to go back to the first page
+  const goToHomePage = () => {
+    setCurrentPage(1);
+  };
+
   return (
     <div className="App">
       <header className="App-header">
@@ -173,6 +178,8 @@ function App() {
           <button onClick={prevPage} disabled={currentPage === 1}>Previous</button>
           <span>Page {currentPage}</span>
           <button onClick={nextPage}>Next</button>
+           {/* Home Button to go to the first page */}
+           <button onClick={goToHomePage} style={{ marginLeft: '10px' }}>Home</button>
         </div>
       </header>
     </div>
