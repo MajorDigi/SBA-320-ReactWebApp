@@ -48,3 +48,15 @@ Documentation:
 - Data Integration:
 - Utilize AJAX to fetch data from an external source.
 - Display retrieved data within the application.
+
+ADDED BONUS FEATURE:
+Local Storage
+- Purpose: Enhances user experience by saving the last searched bird ID in the browser.
+- Storage Mechanism: Utilizes the browser's local storage to retain data between sessions.
+How It Works:
+- When a user searches for a bird by ID, the application saves the ID using localStorage.setItem('lastSearchedId', birdId);.
+- Users can quickly retrieve their last searched ID by clicking the "Last Searched ID" button.
+- The stored ID automatically populates the search input field for easy access.
+Benefits:
+- Reduces the need for users to re-enter information.
+- Provides a more user-friendly and efficient experience.
