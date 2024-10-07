@@ -125,7 +125,6 @@ function App() {
   const goToHomePage = () => {
     setCurrentPage(1);
   };
-
   return (
     <div className="App">
       <header className="App-header">
@@ -135,11 +134,14 @@ function App() {
           This resource is designed for bird lovers to gain knowledge about specific bird species
           based on their conservation status.
         </p>
-
+        <p style={{ marginBottom: "10px" }}>
+          Filter by Status or Search by individual ID to learn more specific detail.
+        </p>
+  
         {/* Error message display */}
         {errorMessage && <div className="error">{errorMessage}</div>}
-        
-        {/* Filter dropdown for status */}
+  
+        {/* Filter dropdown for conservation status */}
         <div className="filter">
           <label htmlFor="status-select">Filter by Status:</label>
           <select id="status-select" value={selectedStatus} onChange={handleStatusChange}>
@@ -151,7 +153,7 @@ function App() {
             ))}
           </select>
         </div>
-
+  
         {/* Search bar for bird ID */}
         <div className="search-bar">
           <input 
@@ -163,13 +165,15 @@ function App() {
           <button onClick={fetchBirdById}>Search</button>
           <button onClick={() => setBirdId('')}>Clear Search</button> {/* Enhancement: Clear search input */}
         </div>
-         {/* New "Return to Home" button */}
-         <div>
+  
+        {/* New "Return to Home" button to reset page and clear search */}
+        <div>
           <button onClick={returnToHomeAndClearSearch}>
             Return to Home and Clear Search
           </button>
         </div>
-        {/* Selected bird details */}
+  
+        {/* Selected bird details display */}
         {selectedBird && (
           <div className="bird-details">
             <h2>{selectedBird.name} ({selectedBird.sciName})</h2>
@@ -187,8 +191,8 @@ function App() {
             />
           </div>
         )}
-
-        {/* Bird list with filtered birds */}
+  
+        {/* Bird list displaying filtered birds */}
         <div className="birdList">
           {filteredBirds.map(bird => (
             <div key={bird.name} className="row">
@@ -197,7 +201,7 @@ function App() {
                 <ul>
                   <li>{bird.sciName}</li>
                   <li>Conservation Status: {bird.status}</li>
-                  <li>Bird Id: {bird.id}</li>
+                  <li>Bird ID: {bird.id}</li>
                 </ul>
               </div>
               <div className="third">
@@ -210,18 +214,19 @@ function App() {
             </div>
           ))}
         </div>
-
-        {/* Pagination controls */}
+  
+        {/* Pagination controls with enhancements */}
         <div className="pagination-controls">
           <button onClick={prevPage} disabled={currentPage === 1}>Previous</button>
           <span>Page {currentPage}</span>
           <button onClick={nextPage}>Next</button>
-          {/* Enhancement: Home button to go to the first page */}
+          {/* Enhancement: Home button to reset pagination to the first page */}
           <button onClick={goToHomePage} style={{ marginLeft: '10px' }}>Home</button>
         </div>
       </header>
     </div>
   );
-}
-
-export default App;
+  }
+  
+  export default App;
+  
