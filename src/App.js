@@ -70,6 +70,8 @@ function App() {
   const fetchBirdById = () => {
     if (birdId.trim() === "") return;
     setCurrentPage(1); // Enhancement: Reset to page 1 after search
+    localStorage.setItem('lastSearchedId', birdId); // Save to localStorage
+
 
     const proxyUrl = 'https://vicarious-prudence-dmio-2484aa58.koyeb.app/';
     const apiUrl = `https://nuthatch.lastelm.software/birds/${birdId}`;
@@ -99,6 +101,14 @@ function App() {
     setCurrentPage(1);        // Reset to page 1
     setSelectedBird(null);    // Clear selected bird data
     setBirdId('');            // Clear search input field
+  };
+   // Function to retrieve the last searched ID from localStorage
+   const loadLastSearchedId = () => {
+    const lastSearchedId = localStorage.getItem('lastSearchedId');
+    if (lastSearchedId) {
+      setBirdId(lastSearchedId);
+      fetchBirdById(lastSearchedId); // Optionally trigger the search
+    }
   };
   // Pagination: Move to the next page
   const nextPage = () => {
@@ -164,6 +174,10 @@ function App() {
           />
           <button onClick={fetchBirdById}>Search</button>
           <button onClick={() => setBirdId('')}>Clear Search</button> {/* Enhancement: Clear search input */}
+            {/* Button to retrieve the last searched ID */}
+            <button onClick={loadLastSearchedId}>
+            Last Searched ID
+          </button>
         </div>
   
         {/* New "Return to Home" button to reset page and clear search */}
